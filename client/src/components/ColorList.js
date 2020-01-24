@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import axios from "axios";
+import {axiosWithAuth} from '../tools/axiosAuth';
 
 const initialColor = {
   color: "",
-  code: { hex: "" }
+  code: { hex: "" },
+  id: 0,
 };
 
-const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
+const ColorList = (props) => {
+  // console.log(props.colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
 
@@ -17,30 +18,32 @@ const ColorList = ({ colors, updateColors }) => {
   };
 
   const saveEdit = e => {
-    e.preventDefault();
-    // Make a put request to save your updated color
-    // think about where will you get the id from...
-    // where is is saved right now?
+  
+  console.log(colorToEdit)
+  props.updateItem(colorToEdit.id, colorToEdit)
+  
+  
+    
   };
 
   const deleteColor = color => {
-    // make a delete request to delete this color
+    props.deleteItem(color.id);
   };
 
   return (
     <div className="colors-wrap">
       <p>colors</p>
       <ul>
-        {colors.map(color => (
+        {props.colors ? props.colors.map(color => (
           <li key={color.color} onClick={() => editColor(color)}>
             <span>
               <span className="delete" onClick={e => {
                     e.stopPropagation();
                     deleteColor(color)
                   }
-                }>
-                  x
-              </span>{" "}
+                }>X
+                
+              </span>{"  "}
               {color.color}
             </span>
             <div
@@ -48,7 +51,7 @@ const ColorList = ({ colors, updateColors }) => {
               style={{ backgroundColor: color.code.hex }}
             />
           </li>
-        ))}
+        )) : <h1>Loading</h1>}
       </ul>
       {editing && (
         <form onSubmit={saveEdit}>
