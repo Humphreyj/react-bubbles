@@ -35,10 +35,10 @@ const deleteItem = id => {
     .then( res => {
       console.log(res)
       
-      let result = colorList.filter(item => {
-        return item.id !== res.data.id
+      let result = props.colorData.filter(item => {
+        return item.id !== res.data
       })
-      props.setColorData([...props.colorData] , [...result]);
+      props.setColorData(result);
 
     })
     .catch(err => {
