@@ -7,15 +7,6 @@ import ColorList from "./ColorList";
 const BubblePage = (props) => {
   const [colorList, setColorList] = useState([]);
 useEffect(() => {
-  // axiosWithAuth()
-  // .get('http://localhost:5000/api/colors')
-  // .then(res => {
-  //   console.log(res);
-  //   setColorList(res.data);
-  // })
-  // .catch(err => {
-  //   console.log(err);
-  // })
 
   setColorList(props.colorData)
 },[colorList])
@@ -47,12 +38,25 @@ const deleteItem = id => {
       let result = colorList.filter(item => {
         return item.id !== res.data.id
       })
-      props.setColorData(result);
+      props.setColorData([...props.colorData] , [...result]);
 
     })
     .catch(err => {
       console.log(err);
     })
+
+}
+
+const addColor = color => {
+  axiosWithAuth().post(`http://localhost:5000/api/colors`, color)
+  .then( res => {
+    console.log(res)
+    
+    props.setColorData([...props.colorData, color]);
+  })
+  .catch(err => {
+    console.log(err);
+  })
 
 }
 
@@ -64,6 +68,7 @@ const deleteItem = id => {
       updateColors={setColorList}
       updateItem={updateItem}
       deleteItem={deleteItem}
+      addColor={addColor}
       />
       <Bubbles colors={colorList} />
     </>

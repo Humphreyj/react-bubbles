@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {axiosWithAuth} from '../tools/axiosAuth';
+import NewColor from './NewColor';
 
 const initialColor = {
   color: "",
@@ -53,6 +54,8 @@ const ColorList = (props) => {
           </li>
         )) : <h1>Loading</h1>}
       </ul>
+      <NewColor
+      addColor={props.addColor} />
       {editing && (
         <form onSubmit={saveEdit}>
           <legend>edit color</legend>
@@ -82,9 +85,10 @@ const ColorList = (props) => {
             <button onClick={() => setEditing(false)}>cancel</button>
           </div>
         </form>
+        
       )}
       <div className="spacer" />
-      {/* stretch - build another form here to add a color */}
+      
     </div>
   );
 };
